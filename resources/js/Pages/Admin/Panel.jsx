@@ -3,8 +3,14 @@ import { usePage, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 export default function Dashboard() {
-    const { tables = [], reservations = [], auth } = usePage().props;
+    const { tables = [], reservations = [], auth, csrf_token } = usePage().props;
     const user = auth?.user;
+
+    const handleCancel = (tableId) => {
+        if (confirm("คุณแน่ใจหรือไม่ว่าต้องการยกเลิกการจอง?")) {
+            Inertia.post(`/admin/reservations/${tableId}/cancel`);
+        }
+    };
 
     // ตรวจสอบว่าเป็นแอดมินหรือไม่
     const isAdmin = user && /^csmju(0[1-9]|[1-9][0-9])@gmail\.com$/.test(user.email);
@@ -44,6 +50,7 @@ export default function Dashboard() {
                                 <td className="border p-2">
                                     {!table.available && (
                                         <form method="POST" action={`/admin/reservations/${table.id}/cancel`}>
+                                            <input type="hidden" name="_token" value={csrf_token} />
                                             <button type="submit" className="bg-red-500 text-white px-3 py-1 rounded">
                                                 ยกเลิก
                                             </button>

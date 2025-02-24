@@ -22,15 +22,30 @@ class AdminController extends Controller
 
         return Inertia::render('Admin/Panel', [
             'reservations' => $reservations,
-            'tables' => $tables
+            'tables' => $tables,
+            'csrf_token' => csrf_token(),
         ]);
     }
 
     public function cancelReservation($id)
     {
         $reservation = Reservations::find($id);
+
         if ($reservation) {
+            // หาโต๊ะที่ถูกจองโดยลูกค้านี้
+            $table = Tables::where('reserveed_by_user_id', $reservation->id)->first();
+
+            if ($table) {
+                // อัปเดตสถานะโต๊ะให้กลับมาเป็นว่าง
+                $table->update([
+                    'available' => 1,
+                    'reserveed_by_user_id' => null
+                ]);
+            }
+
+            // ลบการจองออกจากฐานข้อมูล
             $reservation->delete();
+
             return redirect()->route('admin.panel')->with('success', 'Reservation cancelled successfully.');
         }
 

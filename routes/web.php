@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\CustomerController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -28,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
     // เส้นทางการจองโต๊ะ
     Route::get('/reserve', [TablesController::class, 'index'])->name('reserve.index');
     Route::post('/reserve', [ReservationsController::class, 'store'])->name('reserve.store');
@@ -39,6 +42,11 @@ Route::middleware('auth')->group(function () {
 
     // API สำหรับการจอง
     Route::post('/reserve-table', [ReservationsController::class, 'reserveTable']);
+
+    // หน้าแก้ไขการจอง
+    Route::get('/customer/edit/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
+    Route::post('/customer/update/{id}', [CustomerController::class, 'update'])->name('customer.update');
+
 });
 
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
@@ -46,6 +54,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::post('/admin/reservations/{id}/cancel', [AdminController::class, 'cancelReservation'])->name('admin.cancelReservation');
     Route::get('/admin/editcustomer/{id}', [AdminController::class, 'editcustomer'])->name('admin.editcustomer');
     Route::post('/admin/update/{id}', [AdminController::class, 'update'])->name('admin.update');
+
 });
 
 

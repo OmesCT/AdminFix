@@ -51,4 +51,5 @@ class ReservationsController extends Controller
             return redirect()->route('reserve.index')->withErrors(['error' => 'เกิดข้อผิดพลาดในการจองโต๊ะ']);
         }
     }
+    
 }

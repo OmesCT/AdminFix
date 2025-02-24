@@ -5,7 +5,7 @@ import { Card, CardContent } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 
 export default function Reserve() {
-    const { tables } = usePage().props;
+    const { tables, auth } = usePage().props;
 
     const handleReserve = (table) => {
         if (table.available) {
@@ -26,8 +26,9 @@ export default function Reserve() {
                         tables.map((table) => (
                             <Card
                                 key={table.id}
-                                className={`p-4 rounded-xl shadow-lg w-full h-auto ${table.available ? "bg-white cursor-pointer" : "bg-red-300"
-                                    }`}
+                                className={`p-4 rounded-xl shadow-lg w-full h-auto ${
+                                    table.available ? "bg-white cursor-pointer" : "bg-red-300"
+                                }`}
                                 onClick={() => handleReserve(table)}
                             >
                                 <CardContent className="p-3 flex items-center justify-between gap-4">
@@ -43,7 +44,9 @@ export default function Reserve() {
                                         <h2 className="text-lg font-bold">โต๊ะ {table.id}</h2>
                                         <p className="text-sm">นั่งได้: {table.seat} คน</p>
                                         <p className="text-sm mt-1">
-                                            {table.available ? "ว่าง" : `จองโดย ${table.reserved_by_user_id ? "User ID: " + table.reserved_by_user_id : "ไม่ระบุ"}`}
+                                            {table.available
+                                                ? "ว่าง"
+                                                : `จองโดย ${table.reserved_by_user_id ? "User ID: " + table.reserved_by_user_id : "ไม่ระบุ"}`}
                                         </p>
                                     </div>
 
@@ -56,6 +59,15 @@ export default function Reserve() {
                                         {table.available ? "จองโต๊ะ" : "ถูกจองแล้ว"}
                                     </Button>
 
+                                    {/* ปุ่มแก้ไข (เฉพาะคนที่จองโต๊ะนี้) */}
+                                    {table.reserved_by_user_id === auth.user.id && (
+                                        <Button
+                                            className="bg-blue-500 text-white px-3 py-1 rounded"
+                                            onClick={() => (window.location.href = `/customer/edit/${table.id}`)}
+                                        >
+                                            แก้ไข
+                                        </Button>
+                                    )}
                                 </CardContent>
                             </Card>
                         ))
