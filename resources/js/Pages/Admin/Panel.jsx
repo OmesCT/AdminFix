@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { usePage, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 export default function Dashboard() {
     const { tables = [], reservations = [], auth } = usePage().props;
-    console.log("Tables:", tables);
-    console.log("Reservations:", reservations);
-    console.log("Auth:", auth);
-    
     const user = auth?.user;
 
     // ตรวจสอบว่าเป็นแอดมินหรือไม่
     const isAdmin = user && /^csmju(0[1-9]|[1-9][0-9])@gmail\.com$/.test(user.email);
 
-    // ถ้าไม่ใช่แอดมิน ให้แสดงข้อความไม่มีสิทธิ์เข้าถึง
+    // ถ้าไม่ใช่แอดมิน ให้แสดงข้อความไม่มีสิทธิ์เข้าถึงและเด้งไปหน้า reserve
+    useEffect(() => {
+        if (!isAdmin) {
+            alert("ไม่มีสิทธิ์เข้าถึงหน้านี้");
+            window.location.href = '/reserve';
+        }
+    }, [isAdmin]);
+
     if (!isAdmin) {
-        return <div className="text-red-500 text-center mt-10">ไม่มีสิทธิ์เข้าถึงหน้านี้</div>;
+        return null; // Return null to prevent rendering the rest of the component
     }
 
     return (
@@ -36,7 +39,7 @@ export default function Dashboard() {
                     {tables.length > 0 ? (
                         tables.map((table) => (
                             <tr key={table.id} className="border">
-                                <td className="border p-2">{table.name}</td>
+                                <td className="border p-2">{table.seat}</td>
                                 <td className="border p-2">{table.available ? "ว่าง" : "ถูกจอง"}</td>
                                 <td className="border p-2">
                                     {!table.available && (
@@ -74,10 +77,7 @@ export default function Dashboard() {
                                 <td className="border p-2">{reservation.first_name}</td>
                                 <td className="border p-2">{reservation.email}</td>
                                 <td className="border p-2">
-                                    <Link
-                                        href={`/admin/edit/${reservation.id}`}
-                                        className="bg-blue-500 text-white px-3 py-1 rounded"
-                                    >
+                                    <Link href={`/admin/editcustomer/${reservation.id}`} className="bg-blue-500 text-white px-3 py-1 rounded">
                                         แก้ไข
                                     </Link>
                                 </td>

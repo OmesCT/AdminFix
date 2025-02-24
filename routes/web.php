@@ -44,8 +44,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/admin/panel', [AdminController::class, 'index'])->name('admin.panel');
     Route::post('/admin/reservations/{id}/cancel', [AdminController::class, 'cancelReservation'])->name('admin.cancelReservation');
-    Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');
+    Route::get('/admin/editcustomer/{id}', [AdminController::class, 'editcustomer'])->name('admin.editcustomer');
     Route::post('/admin/update/{id}', [AdminController::class, 'update'])->name('admin.update');
 });
+
 
 require __DIR__.'/auth.php';

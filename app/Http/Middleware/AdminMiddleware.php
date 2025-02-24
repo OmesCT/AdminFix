@@ -13,7 +13,7 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/')->with('error', 'You do not have access to this page.');
+        return redirect('/reserve')->with('error', 'You do not have access to this page.');
     }
 }
 
