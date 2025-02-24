@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cancelled;
+use App\Models\Price;
 use Illuminate\Http\Request;
 
-class CancelledController extends Controller
+class PriceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class CancelledController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Cancelled $cancelled)
+    public function show(Price $price)
     {
         //
     }
@@ -42,7 +42,7 @@ class CancelledController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Cancelled $cancelled)
+    public function edit(Price $price)
     {
         //
     }
@@ -50,7 +50,7 @@ class CancelledController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Cancelled $cancelled)
+    public function update(Request $request, Price $price)
     {
         //
     }
@@ -58,7 +58,7 @@ class CancelledController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cancelled $cancelled)
+    public function destroy(Price $price)
     {
         //
     }

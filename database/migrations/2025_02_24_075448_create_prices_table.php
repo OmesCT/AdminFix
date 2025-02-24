@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cancelleds', function (Blueprint $table) {
+        Schema::create('prices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('reservation_id')->constrained()->onDelete('cascade');
-            $table->string('reason')->nullable(); 
-            $table->dateTime('cancelled_at')->nullable();
+            $table->decimal('price', 10, 2); // ราคาของแพ็กเกจหรือเมนู
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cancelleds');
+        Schema::dropIfExists('prices');
     }
 };
